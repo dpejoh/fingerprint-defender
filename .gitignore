@@ -1,0 +1,22 @@
+# Node modules (if any dependencies added)
+node_modules/
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Build/Dist files (if compiled)
+dist/
+build/
+*.zip
+
+# Temporary files
+*.tmp
+*.temp

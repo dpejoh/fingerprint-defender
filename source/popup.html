@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 380px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1a1a;
+        color: #e0e0e0;
+      }
+    }
+
+    .header {
+      background: #595959;
+      color: white;
+      padding: 16px 20px;
+      border-bottom: 3px solid #d10019;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .notice {
+      padding: 12px 20px;
+      background: #f5f5f5;
+      border-left: 3px solid #d10019;
+      font-size: 11px;
+      color: #595959;
+      line-height: 1.5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .notice {
+        background: #2a2a2a;
+        color: #b0b0b0;
+      }
+    }
+
+    .content {
+      padding: 16px 20px;
+    }
+
+    .toggle-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .toggle-item {
+        border-bottom-color: #333333;
+      }
+    }
+
+    .toggle-item:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-info-wrapper {
+      display: flex;
+      align-items: flex-start;
+      flex: 1;
+      gap: 8px;
+      position: relative;
+    }
+
+    .toggle-info {
+      flex: 1;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .toggle-label {
+        color: #e0e0e0;
+      }
+    }
+
+    .toggle-desc {
+      font-size: 11px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .toggle-desc {
+        color: #999;
+      }
+    }
+
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      color: #595959;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: help;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .info-icon {
+        background: #404040;
+        color: #b0b0b0;
+      }
+    }
+
+    .info-icon:hover {
+      background: #d10019;
+      color: white;
+    }
+
+    .tooltip {
+      display: none;
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2a2a2a;
+      color: #e0e0e0;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      line-height: 1.5;
+      width: min(280px, calc(100% - 32px));
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 1px solid #404040;
+      box-sizing: border-box;
+      word-break: break-word;
+    }
+
+    @media (prefers-color-scheme: light) {
+      .tooltip {
+        background: #ffffff;
+        color: #1a1a1a;
+        border: 1px solid #d0d0d0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+    }
+
+    .info-icon:hover .tooltip {
+      display: block;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      margin-left: 10px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .slider {
+        background-color: #505050;
+      }
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #d10019;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .footer {
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 11px;
+      color: #666;
+      background: #f9f9f9;
+      border-top: 1px solid #e0e0e0;
+      line-height: 1.6;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .footer {
+        background: #252525;
+        border-top-color: #333333;
+        color: #999;
+      }
+    }
+
+    .footer strong {
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .footer strong {
+        color: #e0e0e0;
+      }
+    }
+
+    .footer-section {
+      margin-bottom: 10px;
+    }
+
+    .footer-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .link {
+      color: #d10019;
+      text-decoration: none;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .profiles-section {
+      padding: 16px 20px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .profiles-section {
+        background: #202020;
+        border-top-color: #333333;
+      }
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .section-title {
+        color: #e0e0e0;
+      }
+    }
+
+    .profile-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .profile-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #d0d0d0;
+      background: #ffffff;
+      color: #595959;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .profile-btn {
+        background: #2a2a2a;
+        border-color: #404040;
+        color: #b0b0b0;
+      }
+    }
+
+    .profile-btn:hover {
+      border-color: #d10019;
+      color: #d10019;
+    }
+
+    .profile-btn.active {
+      background: #d10019;
+      border-color: #d10019;
+      color: white;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      padding: 16px 20px;
+      background: #ffffff;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .action-buttons {
+        background: #1a1a1a;
+        border-top-color: #333333;
+      }
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-btn.primary {
+      background: #d10019;
+      color: white;
+    }
+
+    .action-btn.primary:hover {
+      background: #a50014;
+    }
+
+    .action-btn.secondary {
+      background: #e0e0e0;
+      color: #595959;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .action-btn.secondary {
+        background: #404040;
+        color: #b0b0b0;
+      }
+    }
+
+    .action-btn.secondary:hover {
+      background: #d0d0d0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .action-btn.secondary:hover {
+        background: #505050;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Fingerprint Defender</h1>
+    <p>Comprehensive fingerprint protection</p>
+  </div>
+  
+  <div class="notice">
+    <strong>Note:</strong> Some sites (games, 3D apps, captchas) may behave differently. Randomization occurs per page load.
+  </div>
+  
+  <div class="content">
+    <div class="toggle-item">
+      <div class="toggle-info-wrapper">
+        <div class="toggle-info">
+          <div class="toggle-label">Canvas
+            <div class="info-icon">i
+              <div class="tooltip">Adds a small noise to canvas fingerprints and renews it on every page load. This prevents tracking via canvas rendering differences while maintaining site functionality.</div>
+            </div>
+          </div>
+            <div class="toggle-desc">Adds noise to canvas fingerprinting</div>
+          </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="canvas" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+    <div class="toggle-item">
+      <div class="toggle-info-wrapper">
+        <div class="toggle-info">
+          <div class="toggle-label">Font
+            <div class="info-icon">i
+              <div class="tooltip">Adds small noise to font measurement values (offsetWidth/offsetHeight). This prevents tracking via font rendering metrics while keeping layouts intact.</div>
+            </div>
+          </div>
+            <div class="toggle-desc">Randomizes font measurements</div>
+          </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="font" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+    <div class="toggle-item">
+      <div class="toggle-info-wrapper">
+        <div class="toggle-info">
+          <div class="toggle-label">AudioContext
+            <div class="info-icon">i
+              <div class="tooltip">Adds minimal noise to AudioContext API outputs. This prevents audio fingerprinting while maintaining normal web audio functionality.</div>
+            </div>
+          </div>
+            <div class="toggle-desc">Adds noise to audio fingerprinting</div>
+          </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="audioContext" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+    <div class="toggle-item">
+      <div class="toggle-info-wrapper">
+        <div class="toggle-info">
+          <div class="toggle-label">WebGL
+            <div class="info-icon">i
+              <div class="tooltip">Reports fake WebGL parameters and adds noise to buffers. This prevents WebGL-based fingerprinting of your graphics hardware while keeping 3D rendering functional.</div>
+            </div>
+          </div>
+            <div class="toggle-desc">Spoofs WebGL parameters</div>
+          </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="webgl" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+    <div class="toggle-item">
+      <div class="toggle-info-wrapper">
+        <div class="toggle-info">
+          <div class="toggle-label">WebGPU
+            <div class="info-icon">i
+              <div class="tooltip">Adds noise to WebGPU device limits and render data. This prevents WebGPU-based fingerprinting while maintaining compatibility with GPU-accelerated applications.</div>
+            </div>
+          </div>
+            <div class="toggle-desc">Randomizes WebGPU metrics</div>
+          </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="webgpu" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+    <div class="toggle-item">
+      <div class="toggle-info-wrapper">
+        <div class="toggle-info">
+          <div class="toggle-label">ClientRects
+            <div class="info-icon">i
+              <div class="tooltip">Adds minimal noise to getClientRects() measurements. This prevents fingerprinting via DOM element metrics while preserving page layouts.</div>
+            </div>
+          </div>
+            <div class="toggle-desc">Adds noise to DOM rect measurements</div>
+          </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="clientRects" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  
+  <div class="profiles-section">
+    <div class="section-title">Protection Mode</div>
+    <div class="profile-buttons">
+      <button class="profile-btn" data-profile="maximum">Maximum Privacy</button>
+      <button class="profile-btn active" data-profile="balanced">Balanced</button>
+      <button class="profile-btn" data-profile="compatibility">Compatibility</button>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="action-btn secondary" id="resetBtn">Reset Defaults</button>
+    <button class="action-btn primary" id="testBtn">Test Protection</button>
+  </div>
+  
+  <div class="footer">
+    <div class="footer-section">
+      <strong>Report Issues:</strong> For problems with specific protections, visit the original extension pages at <a href="https://mybrowseraddon.com/" class="link" target="_blank">mybrowseraddon.com</a>
+    </div>
+    <div class="footer-section">
+      <strong>Strategy:</strong> Noise is applied per page load to balance privacy and compatibility.
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
