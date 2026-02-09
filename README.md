@@ -75,9 +75,7 @@ Common culprits: 3D games, video platforms, real-time applications, and CAPTCHA 
 
 This extension is a GUI wrapper around fingerprinting defense methods from **[mybrowseraddon.com](https://www.mybrowseraddon.com)**. 
 
-If you encounter issues or bugs with the actual fingerprinting defense logic, please report them to:
-- **Website:** https://www.mybrowseraddon.com
-- **GitHub:** Check if they have a repository there
+If you encounter issues or bugs with the actual fingerprinting defense logic, please report them to: **[mybrowseraddon.com](https://www.mybrowseraddon.com)**
 
 If you encounter issues with the **extension itself** (popup not loading, UI bugs, etc.), feel free to report them here.
 
@@ -102,11 +100,3 @@ Fingerprint Defender does **not**:
 - Use telemetry
 
 All protections happen locally in your browser.
-
-## Version
-
-**Version 1.0.0** – Initial release with 6 fingerprinting defenses and 3 protection modes.
-
----
-
-**Protect your privacy. Browse without a trace.** 🔒
