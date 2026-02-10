@@ -15,7 +15,6 @@ The extension provides toggleable defenses for the following fingerprinting vect
 - **AudioContext** – Adds minimal noise to Web Audio API outputs
 - **WebGL** – Spoofs WebGL parameters to mask your graphics hardware
 - **WebGPU** – Randomizes WebGPU device limits and render data
-- **ClientRects** – Adds noise to DOM element measurement APIs
 
 Each protection method renews its randomization on every page load, making your fingerprint unpredictable.
 
